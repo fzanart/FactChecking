@@ -1,11 +1,11 @@
-from .src.search import keyword_search_result, get_urls
-from .src.retrieve import (
+from src.search import keyword_search_result, get_urls
+from src.retrieve import (
     fetch_url_and_parse_html,
     split_into_chunked_docs,
     retrieve_docs,
 )
-from .src.process import stance_detection, merge_answer
-from .src.aux import clean_and_match
+from src.process import stance_detection, merge_answer
+from src.aux import clean_and_match
 import gradio as gr
 
 
