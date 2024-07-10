@@ -1,3 +1,20 @@
+---
+title: Fact checking pipeline
+emoji: 🌎
+colorFrom: green
+colorTo: gray
+sdk: gradio
+sdk_version: 4.21.0
+app_file: app.py
+pinned: false
+license: mit
+python_version: 3.11
+startup_duration_timeout: 2h
+---
+
+
+
+
 # FactChecking
 FactChecking provides a robust pipeline for fact-checking climate change-related claims.   
 
