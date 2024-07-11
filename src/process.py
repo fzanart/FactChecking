@@ -1,5 +1,5 @@
-from aux import parser, get_llm, clean_and_match
-from prompts import stance_detection_template, template_merge
+from .aux import parser, get_llm, clean_and_match
+from .prompts import stance_detection_template, template_merge
 from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnableParallel
 

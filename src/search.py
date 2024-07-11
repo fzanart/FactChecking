@@ -1,6 +1,6 @@
 import re
-from aux import get_llm
-from prompts import (
+from .aux import get_llm
+from .prompts import (
     zero_shot_retrieval_template,
     few_shot_retrieval_template,
     cot_retrieval_template,
