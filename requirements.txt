@@ -2,3 +2,4 @@ langchain==0.2.7
 langchain-community==0.2.7
 langchain_openai==0.1.15
 langchain-google-genai==1.0.7
+html2text==2024.2.26
