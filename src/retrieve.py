@@ -1,5 +1,6 @@
 import os
 import subprocess
+import shutil
 import html2text
 from langchain_chroma import Chroma
 from langchain.docstore.document import Document
@@ -10,7 +11,8 @@ from langchain_community.embeddings import HuggingFaceInferenceAPIEmbeddings
 
 def install_playwright_dependencies():
     try:
-        subprocess.run(["playwright", "install-deps"], check=True)
+        sudo_cmd = shutil.which("sudo")
+        subprocess.run([sudo_cmd, "playwright", "install-deps"], check=True)
         print("System dependencies installation successful.")
     except subprocess.CalledProcessError as e:
         print(f"Error during system dependencies installation: {e}")
