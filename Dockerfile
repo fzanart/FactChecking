@@ -7,9 +7,11 @@ COPY ./requirements.txt /code/requirements.txt
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
 # Install Playwright and the necessary browsers
-FROM node:20-bookworm
+RUN npx playwright install
 
-RUN npx -y playwright@1.45.1 install --with-deps
+USER root
+RUN npx playwright install-deps
+USER user
 
 # Set up a new user named "user" with user ID 1000
 RUN useradd -m -u 1000 user
