@@ -5,7 +5,7 @@ from .prompts import (
     few_shot_retrieval_template,
     cot_retrieval_template,
 )
-from langchain.tools import DuckDuckGoSearchResults
+from langchain_community.tools import DuckDuckGoSearchResults
 from langchain_core.prompts import PromptTemplate
 
 prompts = {

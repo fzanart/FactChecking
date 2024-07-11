@@ -2,7 +2,7 @@ import os
 import re
 import json
 from langchain_openai import ChatOpenAI
-from langchain_community.llms import HuggingFaceEndpoint
+from langchain_huggingface import HuggingFaceEndpoint
 from langchain_community.chat_models.huggingface import ChatHuggingFace
 from langchain_google_genai import GoogleGenerativeAI
 from langchain_core.pydantic_v1 import BaseModel, Field
