@@ -32,11 +32,11 @@ RUN playwright install-deps
 # Set up environment variables using secrets
 RUN --mount=type=secret,id=OPENAI_API_KEY,mode=0444,required=true \
 	git clone $(cat /run/secrets/OPENAI_API_KEY)
-    --mount=type=secret,id=OPENAI_ORGANIZATION_ID,mode=0444,required=true \
+RUN --mount=type=secret,id=OPENAI_ORGANIZATION_ID,mode=0444,required=true \
 	git clone $(cat /run/secrets/OPENAI_ORGANIZATION_ID)
-    --mount=type=secret,id=HF_API_KEY,mode=0444,required=true \
+RUN --mount=type=secret,id=HF_API_KEY,mode=0444,required=true \
 	git clone $(cat /run/secrets/HF_API_KEY)
-    --mount=type=secret,id=GOOGLE_API_KEY,mode=0444,required=true \
+RUN --mount=type=secret,id=GOOGLE_API_KEY,mode=0444,required=true \
 	git clone $(cat /run/secrets/GOOGLE_API_KEY)
 
 
