@@ -1,10 +1,26 @@
 import os
+import subprocess
 import html2text
 from langchain_chroma import Chroma
 from langchain.docstore.document import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import AsyncChromiumLoader
 from langchain_community.embeddings import HuggingFaceInferenceAPIEmbeddings
+
+
+def install_playwright():
+    # Check if Playwright is already installed
+    if not os.path.exists(os.path.expanduser("~/.cache/ms-playwright")):
+        try:
+            subprocess.run(["playwright", "install", "--with-deps"], check=True)
+            print("Playwright installation successful.")
+        except subprocess.CalledProcessError as e:
+            print(f"Error during Playwright installation: {e}")
+    else:
+        print("Playwright is already installed.")
+
+
+install_playwright()
 
 
 # Fetch
