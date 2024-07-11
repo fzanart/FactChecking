@@ -1,17 +1,11 @@
-FROM python:3.11
+FROM python:3.9
 
 WORKDIR /code
 
 COPY ./requirements.txt /code/requirements.txt
 
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
-
-# Install Playwright and the necessary browsers
-RUN npx playwright install
-
-USER root
-RUN npx playwright install-deps
-USER user
+RUN RUN pip install playwright && playwright install --with-deps
 
 # Set up a new user named "user" with user ID 1000
 RUN useradd -m -u 1000 user
