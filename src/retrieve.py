@@ -8,22 +8,6 @@ from langchain_community.document_loaders import AsyncChromiumLoader
 from langchain_community.embeddings import HuggingFaceInferenceAPIEmbeddings
 
 
-def install_playwright():
-    # Check if Playwright is already installed
-    if not os.path.exists(os.path.expanduser("~/.cache/ms-playwright")):
-        try:
-            subprocess.run(["playwright", "install-deps"], check=True)
-            subprocess.run(["playwright", "install"], check=True)
-            print("Playwright installation successful.")
-        except subprocess.CalledProcessError as e:
-            print(f"Error during Playwright installation: {e}")
-    else:
-        print("Playwright is already installed.")
-
-
-install_playwright()
-
-
 # Fetch
 def fetch_url_and_parse_html(source_url):
     if not isinstance(source_url, list):
