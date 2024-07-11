@@ -31,13 +31,14 @@ RUN playwright install-deps
 
 # Set up environment variables using secrets
 RUN --mount=type=secret,id=OPENAI_API_KEY,mode=0444,required=true \
+	git clone $(cat /run/secrets/OPENAI_API_KEY)
     --mount=type=secret,id=OPENAI_ORGANIZATION_ID,mode=0444,required=true \
+	git clone $(cat /run/secrets/OPENAI_ORGANIZATION_ID)
     --mount=type=secret,id=HF_API_KEY,mode=0444,required=true \
+	git clone $(cat /run/secrets/HF_API_KEY)
     --mount=type=secret,id=GOOGLE_API_KEY,mode=0444,required=true \
-    echo "export OPENAI_API_KEY=$(cat /run/secrets/OPENAI_API_KEY)" >> /etc/profile && \
-    echo "export OPENAI_ORGANIZATION_ID=$(cat /run/secrets/OPENAI_ORGANIZATION_ID)" >> /etc/profile && \
-    echo "export HF_API_KEY=$(cat /run/secrets/HF_API_KEY)" >> /etc/profile && \
-    echo "export GOOGLE_API_KEY=$(cat /run/secrets/GOOGLE_API_KEY)" >> /etc/profile
+	git clone $(cat /run/secrets/GOOGLE_API_KEY)
+
 
 # Set up a new user named "user" with user ID 1000
 RUN useradd -m -u 1000 user
