@@ -1,56 +1,12 @@
 FROM python:3.9
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    libnss3 \
-    libnspr4 \
-    libatk1.0-0 \
-    libatk-bridge2.0-0 \
-    libcups2 \
-    libdrm2 \
-    libxkbcommon0 \
-    libxcomposite1 \
-    libxdamage1 \
-    libxfixes3 \
-    libxrandr2 \
-    libgbm1 \
-    libasound2 \
-    libpango-1.0-0 \
-    libcairo2 \
-    && rm -rf /var/lib/apt/lists/*
-
-WORKDIR /code
-
-COPY ./requirements.txt /code/requirements.txt
-
-# Install Python dependencies and Playwright
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
-RUN pip install playwright
-RUN playwright install chromium
-RUN playwright install-deps
-
-# Set up environment variables using secrets
-RUN --mount=type=secret,id=OPENAI_API_KEY,mode=0444,required=true \
-  git clone $(cat /run/secrets/OPENAI_API_KEY)
-
-RUN --mount=type=secret,id=OPENAI_ORGANIZATION_ID,mode=0444,required=true \
-  git clone $(cat /run/secrets/OPENAI_ORGANIZATION_ID)
-
-RUN --mount=type=secret,id=HF_API_KEY,mode=0444,required=true \
-  git clone $(cat /run/secrets/HF_API_KEY)
-
-RUN --mount=type=secret,id=GOOGLE_API_KEY,mode=0444,required=true \
-  git clone $(cat /run/secrets/GOOGLE_API_KEY)
-
 # Set up a new user named "user" with user ID 1000
 RUN useradd -m -u 1000 user
 
-# Make sure the Playwright browser binaries are accessible
-RUN mkdir -p /home/user/.cache && \
-    cp -r /root/.cache/ms-playwright /home/user/.cache/ && \
-    chmod -R 777 /home/user/.cache/ms-playwright
+# Switch to the "user" user
+USER user
 
-# Set other environment variables
+# Set home to the user's home directory
 ENV HOME=/home/user \
     PATH=/home/user/.local/bin:$PATH \
     PYTHONPATH=$HOME/app \
@@ -59,17 +15,23 @@ ENV HOME=/home/user \
     GRADIO_NUM_PORTS=1 \
     GRADIO_SERVER_NAME=0.0.0.0 \
     GRADIO_THEME=huggingface \
-    SYSTEM=spaces \
-    USER_AGENT="MyApp/1.0"
-
-# Switch to the "user" user
-USER user
+    SYSTEM=spaces
 
 # Set the working directory to the user's home directory
 WORKDIR $HOME/app
 
-# Copy the current directory contents into the container at $HOME/app setting the owner to the user
+# Install pip and other dependencies
+COPY --chown=user ./requirements.txt $HOME/app/requirements.txt
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir --upgrade -r $HOME/app/requirements.txt
+
+# Copy the current directory contents into the container at $HOME/app
 COPY --chown=user . $HOME/app
 
-# Source the profile to ensure environment variables are available
+# Install Playwright and its dependencies
+RUN pip install playwright \
+    && playwright install \
+    && playwright install-deps
+
+# Command to run the application
 CMD ["python", "app.py"]
