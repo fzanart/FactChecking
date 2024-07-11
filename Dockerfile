@@ -19,18 +19,23 @@ RUN apt-get update && apt-get install -y \
     libcairo2 \
     && rm -rf /var/lib/apt/lists/*
 
-# Set up a new user named "user" with user ID 1000
-RUN useradd -m -u 1000 user
-
 WORKDIR /code
 
 COPY ./requirements.txt /code/requirements.txt
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
-# Install Playwright and its dependencies
+# Install Playwright globally
 RUN pip install playwright
 RUN playwright install chromium
 RUN playwright install-deps
+
+# Make sure the Playwright browser binaries are accessible
+RUN mkdir -p /home/user/.cache && \
+    cp -r /root/.cache/ms-playwright /home/user/.cache/ && \
+    chmod -R 777 /home/user/.cache/ms-playwright
+
+# Set up a new user named "user" with user ID 1000
+RUN useradd -m -u 1000 user
 
 # Set environment variables
 ENV HOME=/home/user \
@@ -41,7 +46,8 @@ ENV HOME=/home/user \
     GRADIO_NUM_PORTS=1 \
     GRADIO_SERVER_NAME=0.0.0.0 \
     GRADIO_THEME=huggingface \
-    SYSTEM=spaces
+    SYSTEM=spaces \
+    USER_AGENT="MyApp/1.0"
 
 # Switch to the "user" user
 USER user
