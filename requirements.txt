@@ -6,3 +6,4 @@ langchain-google-genai==1.0.7
 html2text==2024.2.26
 langchain-chroma==0.1.2
 duckduckgo-search==6.1.12
+langchain_huggingface==0.0.3
