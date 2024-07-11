@@ -12,6 +12,7 @@ def install_playwright():
     # Check if Playwright is already installed
     if not os.path.exists(os.path.expanduser("~/.cache/ms-playwright")):
         try:
+            subprocess.run(["playwright", "install-deps"], check=True)
             subprocess.run(["playwright", "install"], check=True)
             print("Playwright installation successful.")
         except subprocess.CalledProcessError as e:
