@@ -8,6 +8,29 @@ from langchain_community.document_loaders import AsyncChromiumLoader
 from langchain_community.embeddings import HuggingFaceInferenceAPIEmbeddings
 
 
+def install_playwright_dependencies():
+    try:
+        subprocess.run(
+            [
+                "sudo",
+                "apt-get",
+                "install",
+                "libnss3",
+                "libnspr4",
+                "libatk1.0-0",
+                "libatk-bridge2.0-0",
+                "libcups2",
+                "libatspi2.0-0",
+                "libxcomposite1",
+                "libxdamage1",
+            ],
+            check=True,
+        )
+        print("System dependencies installation successful.")
+    except subprocess.CalledProcessError as e:
+        print(f"Error during system dependencies installation: {e}")
+
+
 def install_playwright():
     # Check if Playwright is already installed
     if not os.path.exists(os.path.expanduser("~/.cache/ms-playwright")):
