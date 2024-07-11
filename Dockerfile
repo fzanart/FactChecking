@@ -31,17 +31,16 @@ RUN playwright install-deps
 
 # Set up environment variables using secrets
 RUN --mount=type=secret,id=OPENAI_API_KEY,mode=0444,required=true \
-    cat /run/secrets/OPENAI_API_KEY > /etc/environment.d/openai_api_key.conf
+    echo "export OPENAI_API_KEY=$(cat /run/secrets/OPENAI_API_KEY)" >> /etc/profile
 
 RUN --mount=type=secret,id=OPENAI_ORGANIZATION_ID,mode=0444,required=true \
-    cat /run/secrets/OPENAI_ORGANIZATION_ID > /etc/environment.d/openai_org_id.conf
+    echo "export OPENAI_ORGANIZATION_ID=$(cat /run/secrets/OPENAI_ORGANIZATION_ID)" >> /etc/profile
 
 RUN --mount=type=secret,id=HF_API_KEY,mode=0444,required=true \
-    cat /run/secrets/HF_API_KEY > /etc/environment.d/hf_api_key.conf
+    echo "export HF_API_KEY=$(cat /run/secrets/HF_API_KEY)" >> /etc/profile
 
 RUN --mount=type=secret,id=GOOGLE_API_KEY,mode=0444,required=true \
-    cat /run/secrets/GOOGLE_API_KEY > /etc/environment.d/google_api_key.conf
-
+    echo "export GOOGLE_API_KEY=$(cat /run/secrets/GOOGLE_API_KEY)" >> /etc/profile
 
 # Set up a new user named "user" with user ID 1000
 RUN useradd -m -u 1000 user
@@ -73,4 +72,4 @@ WORKDIR $HOME/app
 COPY --chown=user . $HOME/app
 
 # Source the profile to ensure environment variables are available
-CMD ["/bin/bash", "-c", "set -a && . /etc/environment.d/*.conf && set +a && python app.py"]
+CMD ["/bin/bash", "-c", "source /etc/profile && python app.py"]
