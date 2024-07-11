@@ -1,0 +1,19 @@
+# .github/workflows/check-file-size.yml
+name: Check file size
+on:
+  # Run the action on every push on any branch
+  push:
+    branches: ['*']
+  # Also run the action on pull requests to the main branch
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  check-file-size:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check large files
+        uses: ActionsDesk/lfs-warning@v2.0
+        with:
+          filesizelimit: 10485760 # 10MB
